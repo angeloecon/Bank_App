@@ -97,6 +97,47 @@ public class BankingGUI extends javax.swing.JFrame {
         }
     }
     
+    private void transferBalance() {
+        try {
+            if(!transfer_input.getText().isBlank() || !recepient_input.getText().isBlank()){
+                amount = new BigDecimal(transfer_input.getText());
+                recepient = bank.findAccNum(recepient_input.getText());
+                if(!currentUser.getAccountNumber().equals(recepient.getAccountNumber())){
+                    if( amount.compareTo(BigDecimal.ZERO) > 0){
+                        if(currentUser.getBalance().compareTo(amount) >= 0){
+                            currentUser.transferMoney(amount, recepient);
+                            bank.success(transfer_warning, "Sent Successfully.");
+                            currentUser.addTransaction("   <- Transferred: ₱ " +  decimalFormat.format(amount) + " to "+ recepient.getName() +" - " + timeTransaction());
+                            recepient.addTransaction("   -> Received: ₱ " +  decimalFormat.format(amount) + " from " + currentUser.getName() + " - " +timeTransaction());
+                            updateInfo();
+                            bank.updateUser(currentUser);
+                            bank.updateUser(recepient);
+                            bank.saveUserData();
+                            transfer_input.setText("");
+                            recepient_input.setText("");
+                        } else {
+                            bank.failed(transfer_warning, "Not enough balance.");
+                        }   
+                    } else {
+                        throw new NumberFormatException();
+                    }
+                    
+                } else {
+                    bank.failed(transfer_warning, "Receiver cannot be your self.");
+                }  
+            } else {
+                throw new Exception();
+            }
+        } catch (NullPointerException e){
+            bank.failed(transfer_warning, "Recepient not found."); 
+        } catch (NumberFormatException e){
+            bank.failed(transfer_warning,"Invalid Input.");
+        } catch (Exception e){
+            bank.failed(transfer_warning, "Enter details.");
+            System.out.println(e.getMessage());
+        }
+    }
+    
     private void balanceLabel(JLabel label){
         label.setText(decimalFormat.format(currentUser.getBalance()));
     }
@@ -1215,6 +1256,11 @@ public class BankingGUI extends javax.swing.JFrame {
                 transfer_inputFocusLost(evt);
             }
         });
+        transfer_input.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                transfer_inputKeyPressed(evt);
+            }
+        });
 
         transfer_warning.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         transfer_warning.setForeground(new java.awt.Color(255, 0, 0));
@@ -1229,6 +1275,11 @@ public class BankingGUI extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 recepient_inputFocusLost(evt);
+            }
+        });
+        recepient_input.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                recepient_inputKeyPressed(evt);
             }
         });
 
@@ -1384,45 +1435,7 @@ public class BankingGUI extends javax.swing.JFrame {
 
     private void transfer_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transfer_btnActionPerformed
         // TODO add your handling code here:
-        try {
-            if(!transfer_input.getText().isBlank() || !recepient_input.getText().isBlank()){
-                amount = new BigDecimal(transfer_input.getText());
-                recepient = bank.findAccNum(recepient_input.getText());
-                if(!currentUser.getAccountNumber().equals(recepient.getAccountNumber())){
-                    if( amount.compareTo(BigDecimal.ZERO) > 0){
-                        if(currentUser.getBalance().compareTo(amount) >= 0){
-                            currentUser.transferMoney(amount, recepient);
-                            bank.success(transfer_warning, "Sent Successfully.");
-                            currentUser.addTransaction("   <- Transferred: ₱ " +  decimalFormat.format(amount) + " to "+ recepient.getName() +" - " + timeTransaction());
-                            recepient.addTransaction("   -> Received: ₱ " +  decimalFormat.format(amount) + " from " + currentUser.getName() + " - " +timeTransaction());
-                            updateInfo();
-                            bank.updateUser(currentUser);
-                            bank.updateUser(recepient);
-                            bank.saveUserData();
-                            transfer_input.setText("");
-                            recepient_input.setText("");
-                        } else {
-                            bank.failed(transfer_warning, "Not enough balance.");
-                        }   
-                    } else {
-                        throw new NumberFormatException();
-                    }
-                    
-                } else {
-                    bank.failed(transfer_warning, "Receiver cannot be your self.");
-                }  
-            } else {
-                throw new Exception();
-            }
-        } catch (NullPointerException e){
-            bank.failed(transfer_warning, "Recepient not found."); 
-        } catch (NumberFormatException e){
-            bank.failed(transfer_warning,"Invalid Input.");
-        } catch (Exception e){
-            bank.failed(transfer_warning, "Enter details.");
-            System.out.println(e.getMessage());
-        }
-      
+        transferBalance();
     }//GEN-LAST:event_transfer_btnActionPerformed
 
     private void withdraw_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdraw_btnActionPerformed
@@ -1614,6 +1627,20 @@ public class BankingGUI extends javax.swing.JFrame {
            this.withdraw(); 
         }
     }//GEN-LAST:event_withdraw_inputKeyPressed
+
+    private void transfer_inputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_transfer_inputKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
+            this.transferBalance();
+        }
+    }//GEN-LAST:event_transfer_inputKeyPressed
+
+    private void recepient_inputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_recepient_inputKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
+            this.transferBalance();
+        }
+    }//GEN-LAST:event_recepient_inputKeyPressed
 
     /**
      * @param args the command line arguments

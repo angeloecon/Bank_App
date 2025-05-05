@@ -1788,6 +1788,7 @@
                           <Events>
                             <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="transfer_inputFocusGained"/>
                             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="transfer_inputFocusLost"/>
+                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="transfer_inputKeyPressed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="transfer_warning">
@@ -1814,6 +1815,7 @@
                           <Events>
                             <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="recepient_inputFocusGained"/>
                             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="recepient_inputFocusLost"/>
+                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="recepient_inputKeyPressed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JSeparator" name="recepient_separator">
