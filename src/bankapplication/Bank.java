@@ -16,7 +16,7 @@ import javax.swing.Timer;
  *
  * @author Nishikata
  */
-public class Bank {
+public class Bank implements IBank{
     private List<User> users = new ArrayList<>();
     private static final String USERS_FILE = "C:\\Users\\Nishikata\\Documents\\NetBeansProjects\\BankApplication\\src\\bankapplication\\users.txt";
     
@@ -24,6 +24,7 @@ public class Bank {
         loadUsers();
     }
     
+    @Override
     public boolean registerUser(String name, String username,String password){
         if(findUser(username) != null){
             return false;
@@ -36,6 +37,7 @@ public class Bank {
         return true;
     }
     
+    @Override
     public User login(String username, String password){
         for(User user :users){
             if(user.getUsername().equals(username) && user.getPassword().equals(password)){
@@ -45,6 +47,7 @@ public class Bank {
         return null;
     }
     
+    @Override
     public User findUser(String username){
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -55,6 +58,7 @@ public class Bank {
         return null;
     }
     
+    @Override
     public User findAccNum(String accNum){
         for(User user : users){
             if(user.getAccountNumber().equals(accNum)){
@@ -102,10 +106,11 @@ public class Bank {
         saveUsers();
     }
     
+    @Override
     public void updateUser(User updateUser){
         for(User user: users){
             if(user.getUsername().equals(updateUser.getUsername())){
-                int index = users.indexOf(user);
+//                int index = users.indexOf(user);
                 users.set(users.indexOf(user), updateUser);
                 return;
             }
@@ -133,7 +138,7 @@ public class Bank {
             String transactionHistoryString = extractValue(json, "transactionHistory");
             int ColorRGB = Integer.parseInt(extractValue(json,"userColor"));
             Color userColor = new Color(ColorRGB);
-            System.out.println("Parsed user: name=" + name + ", username=" + username + ", password=" + password + ", accountNumber=" + accNumber + "balance" + balance); // Debugging
+            System.out.println("Parsed user: name=" + name + ", username=" + username + ", password=" + password + ", accountNumber=" + accNumber + ", balance" + balance); // Debugging
             return new User(name, username, password, accNumber, balance, transactionHistoryString, userColor);
             
         } catch (NumberFormatException | NullPointerException e){
@@ -176,16 +181,19 @@ public class Bank {
     
 //   Multi purpose Design Codes diri
     
+    @Override
     public void success(JLabel label,String message){
         label.setForeground(Color.green);
         warningTimer(label, 2000, message);
     }
     
+    @Override
     public  void failed(JLabel label, String message){
         label.setForeground(Color.red);
         warningTimer(label, 2000, message);
     }
     
+    @Override
     public void warningTimer(JLabel warningLabel, int delay, String message){
         warningLabel.setText(message);
         Timer timer = new Timer(delay, (ActionEvent evt) -> {
