@@ -96,8 +96,8 @@ public class Bank implements IBank{
                 System.out.println("Users saved to file."); 
             } 
         }catch (IOException e){
-             System.out.println("Error saving users: " + e.getMessage()); // Debugging: Print error
-            e.printStackTrace(); //Print the full error stack trace.
+             System.out.println("Error saving users: " + e.getMessage()); 
+            e.printStackTrace(); 
         }
     }
     
@@ -118,14 +118,14 @@ public class Bank implements IBank{
     }
     private String userToJson(User user){
         return "{" +
-                "\"name\":\"" + user.getName() + "\","+
-                "\"username\":\"" + user.getUsername() + "\","+
-                "\"password\":\"" + user.getPassword() + "\","+
-                "\"accountNumber\":\"" + user.getAccountNumber() + "\","+
-                "\"balance\":\"" + user.getBalance().toString() + "\","+
-                "\"transactionHistory\":\"" + user.getTransactionHistoryString() + "\","+
-                "\"userColor\":\"" + user.getColor().getRGB() + "\","+
-                "}";
+            "\"name\":\"" + user.getName() + "\","+
+            "\"username\":\"" + user.getUsername() + "\","+
+            "\"password\":\"" + user.getPassword() + "\","+
+            "\"accountNumber\":\"" + user.getAccountNumber() + "\","+
+            "\"balance\":\"" + user.getBalance().toString() + "\","+
+            "\"transactionHistory\":\"" + user.getTransactionHistoryString() + "\","+
+            "\"userColor\":\"" + user.getColor().getRGB() + "\","+
+            "}";
     }
     
     private User parseUser(String json){
@@ -203,5 +203,4 @@ public class Bank implements IBank{
         timer.setRepeats(false);
         timer.start();
     }
-
 }

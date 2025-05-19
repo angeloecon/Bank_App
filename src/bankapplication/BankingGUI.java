@@ -1430,7 +1430,6 @@ public class BankingGUI extends javax.swing.JFrame {
         login.setLocationRelativeTo(this);
         login.setVisible(true);
         dispose();
-//        System.out.println(this.currentUser.getName() + " this is the current user.");
     }//GEN-LAST:event_signout_btnActionPerformed
 
     private void transfer_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transfer_btnActionPerformed
@@ -1455,7 +1454,7 @@ public class BankingGUI extends javax.swing.JFrame {
         resetColor(deposit_panel);
         resetColor(withdraw_panel);
         resetColor(transfer_panel);
-        home_panel.setOpaque(true); // Ensure opaque painting
+        home_panel.setOpaque(true); 
         home_panel.repaint();
     }//GEN-LAST:event_home_nav
 
@@ -1589,10 +1588,6 @@ public class BankingGUI extends javax.swing.JFrame {
 
     private void option_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_option_btnActionPerformed
         // TODO add your handling code here:
-        //        ColorPicker userColor = new ColorPicker(this, true);
-        //        userColor.setLocationRelativeTo(this);
-        //        userColor.setVisible(true);
-
         Color selectedColor = JColorChooser.showDialog (this,"",currentUser.getColor());
 
         if(selectedColor != null){
@@ -1600,7 +1595,6 @@ public class BankingGUI extends javax.swing.JFrame {
             profile_panel.setBackground(selectedColor);
             bank.updateUser(currentUser);
             bank.saveUserData();
-
         }
     }//GEN-LAST:event_option_btnActionPerformed
 
